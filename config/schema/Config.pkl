@@ -1,0 +1,49 @@
+/// CSVDock import job configuration
+module Config
+
+/// Merge separate debit/credit columns into a single signed amount column
+class DebitCreditSpec {
+  debit: String
+  credit: String
+  output: String
+}
+
+/// Date column reformat specification
+class DateColumnSpec {
+  source: String
+  input_format: String
+  output_format: String
+}
+
+/// Row exclusion rule — exact match against any value in the list
+class ExcludeSpec {
+  column: String
+  values: Listing<String>
+}
+
+/// Google Sheets target location
+class GoogleSheetSpec {
+  spreadsheet_id: String
+  worksheet: String
+}
+
+/// Target Google Sheet
+sheet: GoogleSheetSpec
+
+/// Override CSV column headers (for headerless CSVs)
+csv_headers: Listing<String>?
+
+/// Merge separate debit/credit columns into one signed amount column
+debit_credit_columns: DebitCreditSpec?
+
+/// CSV column → Sheet column mapping (only mapped columns are written)
+column_map: Mapping<String, String>
+
+/// Date columns to reformat using explicit strptime/strftime formats
+date_columns: Listing<DateColumnSpec>
+
+/// Rows to exclude based on exact column value matches
+exclude_rows: Listing<ExcludeSpec>?
+
+/// When true, print matched rows and prompt for confirmation before excluding
+confirm_exclusions: Boolean = true
