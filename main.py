@@ -134,6 +134,12 @@ def run(config_path: str, csv_path: str, credentials_file: str) -> None:
 
     print(f"Wrote {len(df)} rows to '{config.sheet.worksheet}'.")
 
+    for spec in config.date_columns:
+        col = config.column_map.get(spec.source, spec.source)
+        if col in df.columns and df[col].any():
+            dates = pd.to_datetime(df[col], format=spec.output_format)
+            print(f"Date range ({col}): {dates.min().date()} → {dates.max().date()}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
